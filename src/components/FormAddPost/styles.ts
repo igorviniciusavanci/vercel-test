@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
-import { Form } from '@unform/web';
+import styled, { css } from 'styled-components'
+import { Form } from '@unform/web'
 
 export const FormScrip = styled(Form)`
   margin-top: 3rem;
@@ -154,4 +154,4 @@ export const FormScrip = styled(Form)`
       background-color: lightgray;
     }
   }
-`;
+`
