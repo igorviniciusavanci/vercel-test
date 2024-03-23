@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import Image from 'next/image'
 import { Form } from '@unform/web'
+import Image from 'next/image'
+import styled from 'styled-components'
 
 export const Container = styled.div`
   height: 100vh;

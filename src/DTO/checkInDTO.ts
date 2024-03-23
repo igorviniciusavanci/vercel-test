@@ -1,6 +1,6 @@
-import FarmData from './farmDTO'
-import PatrimonyData from './patrimonyDTO'
-import User from './userDTO'
+import type FarmData from './farmDTO'
+import type PatrimonyData from './patrimonyDTO'
+import type User from './userDTO'
 
 export default interface ChechInData {
   created_at: string

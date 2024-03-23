@@ -1,4 +1,4 @@
-import FileData from './fileDTO'
+import type FileData from './fileDTO'
 
 export default interface FarmData {
   id: string

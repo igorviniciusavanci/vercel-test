@@ -1,5 +1,5 @@
-import Address from './addressDTO'
-import BankAccount from './bankAccountDTO'
+import type Address from './addressDTO'
+import type BankAccount from './bankAccountDTO'
 
 export default interface ProviderData {
   active: boolean

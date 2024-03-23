@@ -1,7 +1,7 @@
-import FarmData from './farmDTO'
-import FileData from './fileDTO'
-import manufacturerData from './manufacturerDTO'
-import PatrimonyGroupData from './patrimonyGroupDTO'
+import type FarmData from './farmDTO'
+import type FileData from './fileDTO'
+import type manufacturerData from './manufacturerDTO'
+import type PatrimonyGroupData from './patrimonyGroupDTO'
 
 export default interface PatrimonyData {
   id: string

@@ -1,14 +1,7 @@
+import type { DocumentContext, DocumentInitialProps } from 'next/document'
+import Document, { Head, Html, Main, NextScript } from 'next/document'
 import React from 'react'
-import Document, {
-  DocumentInitialProps,
-  DocumentContext,
-  Html,
-  Head,
-  Main,
-  NextScript
-} from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
-import { usePreferences } from '../hooks/preferences'
 
 export default class MyDocument extends Document {
   static async getInitialProps(
@@ -65,10 +58,7 @@ export default class MyDocument extends Document {
 
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="black"
-          ></meta>
+          <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
           <meta name="theme-color" content="#203038" />
           <meta
@@ -81,11 +71,11 @@ export default class MyDocument extends Document {
           <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&family=Signika+Negative:wght@400;500;600;700&display=swap"
             rel="stylesheet"
-          ></link>
+          />
           <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          ></link>
+          />
 
           <link rel="apple-touch-icon" href="../../icons/iconb-384x384.png" />
           <link

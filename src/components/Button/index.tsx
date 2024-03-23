@@ -1,4 +1,5 @@
-import React, { ButtonHTMLAttributes } from 'react'
+import type { ButtonHTMLAttributes } from 'react'
+import React from 'react'
 
 import { Container } from './styles'
 
@@ -24,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({
       className="buttonload"
       {...rest}
     >
-      {loading ? <i className="fa fa-circle-o-notch fa-spin"></i> : title}
+      {loading ? <i className="fa fa-circle-o-notch fa-spin" /> : title}
       {children}
     </Container>
   )

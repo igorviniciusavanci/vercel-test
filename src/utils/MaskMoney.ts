@@ -31,7 +31,9 @@ export default class Money {
   static strip(value: string): string {
     const l = value.replace(/[\D]*/g, '')
     const d = l.match(/\d/g)
-    d && d.splice(d.length - 2, 0, '.')
+    if (d) {
+      d.splice(d.length - 2, 0, '.')
+    }
     const result = d ? d.join('') : ''
     return result
   }

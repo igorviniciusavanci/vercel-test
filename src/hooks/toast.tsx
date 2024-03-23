@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useCallback, useState } from 'react'
+import React, { createContext, useCallback, useContext, useState } from 'react'
 import { uuid } from 'uuidv4'
+
+// eslint-disable-next-line import/no-cycle
 import ToastContainer from '../components/ToastContainer'
 
 interface ToastContextData {
@@ -39,6 +41,7 @@ const ToastProvider: React.FC = ({ children }) => {
   }, [])
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
       <ToastContainer messages={messages} />

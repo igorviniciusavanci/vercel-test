@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
 import { animated } from 'react-spring'
+import styled, { css } from 'styled-components'
 
 interface ConatainerProps {
   type?: 'success' | 'error' | 'info'

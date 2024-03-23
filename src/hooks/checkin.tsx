@@ -1,12 +1,11 @@
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import React, {
   createContext,
   useCallback,
-  useState,
   useContext,
-  useEffect
+  useEffect,
+  useState
 } from 'react'
-import { destroyCookie, parseCookies, setCookie } from 'nookies'
-import { darkTheme, lightTheme } from '../styles/ThemeConfig'
 
 interface CheckInData {
   id?: string
@@ -28,9 +27,7 @@ const OffLineCheckInContext = createContext<OffLineCheckInContextData>(
 )
 
 const OffLineCheckInProvider: React.FC = ({ children }) => {
-  const [localTheme, setLocalTheme] = useState('dark')
   const [checkIn, setCheckIn] = useState<CheckInData | undefined>(undefined)
-  const [checkInList, setCheckInList] = useState<CheckInData[]>()
 
   useEffect(() => {
     const { check_in } = parseCookies()
@@ -61,12 +58,11 @@ const OffLineCheckInProvider: React.FC = ({ children }) => {
 
   return (
     <OffLineCheckInContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         iniciateCheckIn,
-        checkIn: checkIn,
+        checkIn,
         checkOut
-        // theme: localTheme,
-        // styleTheme: localTheme === 'light' ? lightTheme : darkTheme
       }}
     >
       {children}

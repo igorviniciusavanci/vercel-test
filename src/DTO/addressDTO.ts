@@ -1,5 +1,5 @@
-import City from './cityDTO'
-import State from './stateDTO'
+import type City from './cityDTO'
+import type State from './stateDTO'
 
 export default interface Address {
   address: string

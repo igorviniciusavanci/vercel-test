@@ -1,4 +1,4 @@
-import Address from './addressDTO'
+import type Address from './addressDTO'
 
 export default interface Place {
   id: string

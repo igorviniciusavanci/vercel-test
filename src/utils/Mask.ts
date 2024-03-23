@@ -47,4 +47,4 @@ const removeMask = (value: string): string => {
   return value.replace(/\D/g, '') // substitui qualquer caracter que nao seja numero por nada
 }
 
-export { creditCardMask, cpfMask, cepMask, phoneMask, cnpjMask, removeMask }
+export { cepMask, cnpjMask, cpfMask, creditCardMask, phoneMask, removeMask }

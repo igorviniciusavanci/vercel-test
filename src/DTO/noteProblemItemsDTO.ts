@@ -1,4 +1,4 @@
-import File from './fileDTO'
+import type File from './fileDTO'
 
 export default interface NoteProblemDataItems {
   id: string

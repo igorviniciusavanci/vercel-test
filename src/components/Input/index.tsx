@@ -1,13 +1,8 @@
-import React, {
-  InputHTMLAttributes,
-  useRef,
-  useState,
-  useCallback,
-  useEffect
-} from 'react'
-
 import { useField } from '@unform/core'
+import type { InputHTMLAttributes } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FiAlertCircle } from 'react-icons/fi'
+
 import { Container, Error } from './styles'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

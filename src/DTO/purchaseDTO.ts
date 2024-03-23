@@ -1,5 +1,5 @@
-import File from './fileDTO'
-import ProviderData from './providerDTO'
+import type File from './fileDTO'
+import type ProviderData from './providerDTO'
 
 export default interface PurchaseData {
   active: boolean

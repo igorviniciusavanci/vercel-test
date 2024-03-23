@@ -1,5 +1,5 @@
-import FarmData from './farmDTO'
-import User from './userDTO'
+import type FarmData from './farmDTO'
+import type User from './userDTO'
 
 export default interface PermissionData {
   active: boolean

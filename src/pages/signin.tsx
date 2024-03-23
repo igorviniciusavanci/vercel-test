@@ -1,31 +1,29 @@
-import React, { useCallback, useRef, useState } from 'react'
-import Router from 'next/router'
-import * as Yup from 'yup'
+import type { FormHandles } from '@unform/core'
 import Head from 'next/head'
 import Image from 'next/image'
+import Router from 'next/router'
+import React, { useCallback, useRef, useState } from 'react'
+import * as Yup from 'yup'
+
 import logo from '../assets/images/agrologoLight.png'
 import backgroundImage from '../assets/images/bg.jpg'
+import Button from '../components/Button'
+import Input from '../components/Input'
+import { withSSRGuest } from '../hocs/withSSRGuest'
 import { useAuth } from '../hooks/auth'
-import { FormHandles } from '@unform/core'
-
+import { useToast } from '../hooks/toast'
 import {
+  Box,
+  BoxForm,
+  BoxHeader,
   Container,
   Content,
-  CotainerImage,
   ContentForm,
-  Box,
-  BoxHeader,
-  Title,
-  BoxForm
+  CotainerImage,
+  Title
 } from '../styles/pages/Signin'
-import Input from '../components/Input'
-import Button from '../components/Button'
-import { withSSRGuest } from '../hocs/withSSRGuest'
-import { cpfMask, removeMask } from '../utils/Mask'
 import getValidationsErrors from '../utils/getValidationErrors'
-import { useToast } from '../hooks/toast'
-import ToggleButton from '../components/ToggleButton'
-import { usePreferences } from '../hooks/preferences'
+import { cpfMask, removeMask } from '../utils/Mask'
 
 interface SiginInFormData {
   cpf: string
@@ -34,17 +32,10 @@ interface SiginInFormData {
 
 const Signin: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
-  const { setPreferences, theme } = usePreferences()
   const { signIn } = useAuth()
   const { addToast } = useToast()
   const [cpf, setCpf] = useState('')
   const [loading, setLoading] = useState(false)
-
-  const toggleTheme = () => {
-    theme === 'light'
-      ? setPreferences({ theme: 'dark' })
-      : setPreferences({ theme: 'light' })
-  }
 
   const handleSubmit = useCallback(
     async (data: SiginInFormData) => {
@@ -64,7 +55,6 @@ const Signin: React.FC = () => {
         setLoading(false)
       } catch (err) {
         setLoading(false)
-        console.log(err)
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationsErrors(err)
           formRef.current?.setErrors(errors)
@@ -95,7 +85,7 @@ const Signin: React.FC = () => {
         })
       }
     },
-    [signIn]
+    [signIn, addToast]
   )
 
   const onChangeCpf = useCallback(event => {
@@ -114,15 +104,20 @@ const Signin: React.FC = () => {
       <Content>
         <CotainerImage>
           <div className="background">
-            <div className="layer"></div>
-            <Image src={backgroundImage} objectFit="cover" priority />
+            <div className="layer" />
+            <Image
+              src={backgroundImage}
+              alt="background logo"
+              objectFit="cover"
+              priority
+            />
           </div>
         </CotainerImage>
         <ContentForm>
           <Box>
             <BoxForm ref={formRef} onSubmit={handleSubmit}>
               <BoxHeader>
-                <Image src={logo} width="150" height="95" />
+                <Image src={logo} alt="logo" width="150" height="95" />
               </BoxHeader>
               <Title>Faça login no AgroApp</Title>
               <Input
@@ -144,18 +139,13 @@ const Signin: React.FC = () => {
             </BoxForm>
           </Box>
         </ContentForm>
-        <div className="theme">
-          <ToggleButton onChange={toggleTheme} />
-        </div>
       </Content>
     </Container>
   )
 }
 
-type userData = { user: { cpf: string } }
-
 export default Signin
-export const getServerSideProps = withSSRGuest(async ctx => {
+export const getServerSideProps = withSSRGuest(async () => {
   return {
     props: {}
   }

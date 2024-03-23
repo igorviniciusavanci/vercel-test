@@ -1,4 +1,4 @@
-import {
+import type {
   GetServerSideProps,
   GetServerSidePropsContext,
   GetServerSidePropsResult
@@ -11,7 +11,7 @@ export function withSSRGuest<P>(fn: GetServerSideProps<P>) {
   ): Promise<GetServerSidePropsResult<P>> => {
     const cookies = parseCookies(ctx)
 
-    if (cookies['token']) {
+    if (cookies.token) {
       return {
         redirect: {
           destination: '/',
@@ -20,6 +20,6 @@ export function withSSRGuest<P>(fn: GetServerSideProps<P>) {
       }
     }
 
-    return await fn(ctx)
+    return fn(ctx)
   }
 }

@@ -1,5 +1,6 @@
-import numeral from 'numeral'
 import 'numeral/locales/pt-br'
+
+import numeral from 'numeral'
 
 numeral.locale('pt-br')
 const currency = (value: number): string => {

@@ -1,12 +1,14 @@
+import { parseCookies, setCookie } from 'nookies'
 import React, {
   createContext,
   useCallback,
-  useState,
   useContext,
-  useEffect
+  useEffect,
+  useState
 } from 'react'
-import { parseCookies, setCookie } from 'nookies'
+
 import { darkTheme, lightTheme } from '../styles/ThemeConfig'
+
 interface PreferencesData {
   theme: string
 }
@@ -38,6 +40,7 @@ const PreferencesProvider: React.FC = ({ children }) => {
 
   return (
     <PreferencesContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         setPreferences,
         theme: localTheme,

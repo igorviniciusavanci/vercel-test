@@ -1,15 +1,16 @@
+import { AxiosInstance } from 'axios'
+import Router from 'next/router'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import React, {
   createContext,
   useCallback,
-  useState,
   useContext,
-  useEffect
+  useEffect,
+  useState
 } from 'react'
+
+import type PermissionData from '../DTO/permissionData'
 import { setupAPIClient } from '../server/api'
-import { parseCookies, setCookie, destroyCookie } from 'nookies'
-import Router from 'next/router'
-import PermissionData from '../DTO/permissionData'
-import { AxiosInstance } from 'axios'
 
 interface UserData {
   id: string
@@ -33,19 +34,9 @@ interface PasswordData {
   oldPassword: string
 }
 
-interface AuthState {
-  token: string
-  user: UserData
-}
-
 interface SignInCredentials {
   cpf: string
   password: string
-}
-
-interface SignInFarmData {
-  id: string
-  farmId: string
 }
 
 interface AuthContextData {
@@ -56,7 +47,6 @@ interface AuthContextData {
   isAuthenticated: boolean
   signIn(credentials: SignInCredentials): Promise<void>
   onSelectFarm(data: string): Promise<void>
-  onChangeFarmPermissions(data: SignInFarmData): Promise<void>
   updatePassword(data: PasswordData): Promise<void>
   signOut(): void
 }
@@ -74,24 +64,14 @@ export function signOut(ctx = undefined): void {
 
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<UserData>()
-  const [permissions, setPermissions] = useState<PermissionData>()
+  const [permissions] = useState<PermissionData>()
   const [farmId, setFarmId] = useState<string>()
   const [farm, setFarm] = useState<FarmData>()
   const isAuthenticated = !!user
 
   useEffect(() => {
     console.log('entrou no primeiro use')
-    const { token, farmId, farm, permissions } = parseCookies()
-
-    if (farmId) {
-      setFarmId(farmId)
-    }
-    if (farm) {
-      setFarm(JSON.parse(farm))
-    }
-    if (permissions) {
-      setPermissions(JSON.parse(permissions))
-    }
+    const { token } = parseCookies()
 
     if (token) {
       const apiClient = setupAPIClient()
@@ -100,27 +80,6 @@ const AuthProvider: React.FC = ({ children }) => {
         .then(response => {
           const { email, permission, roles, cpf, name, id } = response.data
           setUser({ email, permission, roles, cpf, name, id })
-
-          if (farmId) {
-            apiClient
-              .get('permission', {
-                params: {
-                  user_id: id
-                }
-              })
-              .then(responsePermissions => {
-                const filtered = responsePermissions.data.filter(item => {
-                  if (item.farm_id === farmId) return item
-                })
-                if (filtered.length > 0) {
-                  setPermissions(filtered[0])
-                }
-              })
-              .catch(() => {
-                console.log('erro no cacth do permission')
-                // signOut()
-              })
-          }
         })
         .catch(() => {
           console.log('erro no get me')
@@ -130,30 +89,6 @@ const AuthProvider: React.FC = ({ children }) => {
       console.log('sem token')
       // signOut()
     }
-    // if (farmId) {
-    //   api
-    //     .get('farm', {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //         farm: farmId
-    //       },
-    //       params: {
-    //         farmId
-    //       }
-    //     })
-    //     .then(response => {
-    //       const respFarm = response.data[0]
-    //       setCookie(undefined, 'farm', JSON.stringify(respFarm), {
-    //         maxAge: 60 * 60 * 24 * 1 // um dia
-    //       })
-    //       const { name, id, cnpj, cpf } = respFarm
-    //       setFarm({ name, id, cnpj, cpf })
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //       console.log('sem fazenda primeiro use')
-    //     })
-    // }
   }, [])
 
   const signIn = useCallback(async ({ cpf, password }) => {
@@ -163,15 +98,14 @@ const AuthProvider: React.FC = ({ children }) => {
       password
     })
 
-    const { token, user } = response.data
-    setCookie(undefined, 'token', token, {
+    setCookie(undefined, 'token', response.data.token, {
       maxAge: 60 * 60 * 24 * 60 // um dia
     })
-    setCookie(undefined, 'user', JSON.stringify(user), {
+    setCookie(undefined, 'user', JSON.stringify(response.data.user), {
       maxAge: 60 * 60 * 24 * 60 // um dia
     })
 
-    const { email, permission, roles, name, id } = user
+    const { email, permission, roles, name, id } = response.data.user
     setUser({ email, permission, roles, cpf, name, id })
     Router.push('/farms')
   }, [])
@@ -207,28 +141,6 @@ const AuthProvider: React.FC = ({ children }) => {
     }
   }, [])
 
-  const onChangeFarmPermissions = useCallback(async ({ id, farmId }) => {
-    console.log('entrou no change farm')
-    if (farmId) {
-      const client = setupAPIClient()
-      const response = await client.get('permission', {
-        params: {
-          user_id: id
-        }
-      })
-      const filtered = response.data.filter(item => {
-        if (item.farm_id === farmId) return item
-      })
-      if (filtered.length > 0) {
-        setPermissions(filtered[0])
-        setCookie(undefined, 'permissions', JSON.stringify(filtered[0]), {
-          maxAge: 60 * 60 * 24 * 60 // um dia
-        })
-      }
-    }
-    //
-  }, [])
-
   const updatePassword = useCallback(async ({ id, password, oldPassword }) => {
     const apiClient = setupAPIClient()
     const responseUser = await apiClient.put('user', {
@@ -236,9 +148,8 @@ const AuthProvider: React.FC = ({ children }) => {
       password,
       old_password: oldPassword
     })
-    const user = responseUser.data
 
-    setCookie(undefined, 'user', JSON.stringify(user), {
+    setCookie(undefined, 'user', JSON.stringify(responseUser.data.user), {
       maxAge: 60 * 60 * 24 * 60 // 60 dias
     })
 
@@ -248,17 +159,17 @@ const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
-        user: user,
-        permissions: permissions,
-        farmId: farmId,
-        farm: farm,
+        user,
+        permissions,
+        farmId,
+        farm,
         isAuthenticated,
         signIn,
         onSelectFarm,
         signOut,
-        updatePassword,
-        onChangeFarmPermissions
+        updatePassword
       }}
     >
       {children}

@@ -1,6 +1,6 @@
-import FarmData from './farmDTO'
-import NoteProblemDataItems from './noteProblemItemsDTO'
-import User from './userDTO'
+import type FarmData from './farmDTO'
+import type NoteProblemDataItems from './noteProblemItemsDTO'
+import type User from './userDTO'
 
 export default interface NoteProblemData {
   id: string

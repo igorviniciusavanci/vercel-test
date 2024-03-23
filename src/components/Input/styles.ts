@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+
 import Tooltip from '../Tooltip'
 // import Tooltip from '../Tooltip'
 
@@ -14,8 +15,8 @@ export const Container = styled.div<ContainerProps>`
 
   span {
     color: ${props => props.theme.colors.label_red};
-    ${props =>
-      props.disabled &&
+    ${propsA =>
+      propsA.disabled &&
       css`
         color: ${props => props.theme.colors.label_disabled};
       `}
@@ -41,23 +42,23 @@ export const Container = styled.div<ContainerProps>`
     /* font: 1.6rem Nunito; */
   }
 
-  ${props =>
-    props.isErrored &&
+  ${propsA =>
+    propsA.isErrored &&
     css`
       border-color: ${props => props.theme.colors.label_red};
     `}
   label {
     height: 2rem;
     color: ${props => props.theme.colors.label};
-    ${props =>
-      props.isErrored &&
+    ${propsB =>
+      propsB.isErrored &&
       css`
         color: ${props => props.theme.colors.label_red};
       `}
     ${props =>
       props.disabled &&
       css`
-        color: ${props => props.theme.colors.label_disabled};
+        color: ${propsC => propsC.theme.colors.label_disabled};
       `}
   }
 `

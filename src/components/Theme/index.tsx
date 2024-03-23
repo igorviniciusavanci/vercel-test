@@ -1,8 +1,9 @@
+import type { AppProps } from 'next/app'
 import React, { useEffect, useState } from 'react'
+import { ThemeProvider } from 'styled-components'
+
 import { usePreferences } from '../../hooks/preferences'
 import { darkTheme, GlobalStyles } from '../../styles/ThemeConfig'
-import { AppProps } from 'next/app'
-import { ThemeProvider } from 'styled-components'
 
 const Theme: React.FC<AppProps> = ({ Component, pageProps }) => {
   const { styleTheme, theme } = usePreferences()
